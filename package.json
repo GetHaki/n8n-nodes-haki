@@ -1,7 +1,7 @@
 {
   "name": "n8n-nodes-haki",
   "version": "0.1.6",
-  "description": "Community n8n nodes for Haki: Haki Context (before the agent) and Haki Capture (after the agent)",
+  "description": "Self-hosted long-term memory for AI agents: Haki Context (before the agent) and Haki Capture (after the agent)",
   "license": "MIT",
   "author": {
     "name": "Ousmane Dicko",
@@ -16,7 +16,10 @@
     "n8n-community-node-package",
     "n8n",
     "haki",
-    "agent-memory"
+    "agent-memory",
+    "memory",
+    "self-hosted",
+    "postgres"
   ],
   "main": "dist/index.js",
   "files": [
