@@ -28,7 +28,7 @@ export class HakiApi implements ICredentialType {
 		},
 		{
 			displayName: 'API Key',
-			name: 'api_key',
+			name: 'apiKey',
 			type: 'string',
 			typeOptions: { password: true },
 			default: '',
@@ -37,16 +37,15 @@ export class HakiApi implements ICredentialType {
 		},
 	];
 
-	// Nodes build this header themselves (see nodes/utils.ts authHeaders) so
-	// they can omit it entirely when api_key is blank -- open dev mode has no
-	// auth to satisfy. This generic version only backs n8n's own "Test"
-	// button on the credential; an empty key here correctly surfaces as a 401
-	// against a server that does enforce auth, which is the right signal.
+	// Both nodes call this via httpRequestWithAuthentication('hakiApi', ...),
+	// so n8n injects this header itself -- an empty apiKey correctly surfaces
+	// as a 401 against a server that does enforce auth, which is the right
+	// signal for the documented, supported no-key local-dev setup.
 	authenticate: IAuthenticateGeneric = {
 		type: 'generic',
 		properties: {
 			headers: {
-				Authorization: '=Bearer {{$credentials.api_key}}',
+				Authorization: '=Bearer {{$credentials.apiKey}}',
 			},
 		},
 	};

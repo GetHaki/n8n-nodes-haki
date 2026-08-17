@@ -3,7 +3,7 @@ import type { INode } from 'n8n-workflow';
 
 export interface HakiCredentials {
 	base_url: string;
-	api_key?: string;
+	apiKey?: string;
 }
 
 export interface PacketFact {
@@ -34,15 +34,6 @@ export function requireSubject(node: INode, subjectId: string, itemIndex: number
 		);
 	}
 	return subject;
-}
-
-export function authHeaders(credentials: HakiCredentials): Record<string, string> {
-	const apiKey = (credentials.api_key ?? '').trim();
-	return apiKey ? { Authorization: `Bearer ${apiKey}` } : {};
-}
-
-export function baseUrl(credentials: HakiCredentials): string {
-	return (credentials.base_url ?? '').replace(/\/+$/, '');
 }
 
 /** Formats a ContextPacket as an injectable system-prompt block. Mirrors the

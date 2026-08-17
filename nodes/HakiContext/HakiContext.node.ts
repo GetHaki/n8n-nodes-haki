@@ -5,10 +5,9 @@ import type {
 	INodeType,
 	INodeTypeDescription,
 } from 'n8n-workflow';
+import { NodeConnectionTypes } from 'n8n-workflow';
 import {
 	apiError,
-	authHeaders,
-	baseUrl,
 	formatPacket,
 	requireSubject,
 	type ContextApiResponse,
@@ -22,11 +21,13 @@ export class HakiContext implements INodeType {
 		icon: 'file:../../icons/haki.svg' as Icon,
 		group: ['transform'],
 		version: 1,
+		subtitle: '={{$parameter["subject_id"]}}',
 		description:
 			"Fetches the subject's long-term memory (ContextPacket) BEFORE the LLM call. Always place before the AI Agent.",
 		defaults: { name: 'Haki Context' },
-		inputs: ['main'],
-		outputs: ['main'],
+		usableAsTool: true,
+		inputs: [NodeConnectionTypes.Main],
+		outputs: [NodeConnectionTypes.Main],
 		credentials: [{ name: 'hakiApi', required: true }],
 		properties: [
 			{
@@ -55,21 +56,21 @@ export class HakiContext implements INodeType {
 				default: '',
 				required: true,
 				placeholder: '{{ $json.body.message }}',
-				description: 'The current message — used to rerank relevant facts.',
+				description: 'The current message — used to rerank relevant facts',
 			},
 			{
 				displayName: 'Budget Tokens',
 				name: 'budget_tokens',
 				type: 'number',
 				default: 2000,
-				description: 'Token budget for the ContextPacket.',
+				description: 'Token budget for the ContextPacket',
 			},
 			{
 				displayName: 'Purpose',
 				name: 'purpose',
 				type: 'string',
 				default: '',
-				description: 'Optional: task type (support, onboarding...), recorded in the trace.',
+				description: 'Optional: task type (support, onboarding...), recorded in the trace',
 			},
 		],
 	};
@@ -78,8 +79,7 @@ export class HakiContext implements INodeType {
 		const items = this.getInputData();
 		const returnData: INodeExecutionData[] = [];
 		const credentials = (await this.getCredentials('hakiApi')) as unknown as HakiCredentials;
-		const url = `${baseUrl(credentials)}/v1/context`;
-		const headers = authHeaders(credentials);
+		const url = `${credentials.base_url.replace(/\/+$/, '')}/v1/context`;
 
 		for (let i = 0; i < items.length; i++) {
 			const projectId = this.getNodeParameter('project_id', i) as string;
@@ -94,10 +94,9 @@ export class HakiContext implements INodeType {
 
 			let response: ContextApiResponse;
 			try {
-				response = (await this.helpers.httpRequest({
+				response = (await this.helpers.httpRequestWithAuthentication.call(this, 'hakiApi', {
 					method: 'POST',
 					url,
-					headers,
 					body: {
 						project_id: projectId,
 						subject_id: subjectId,

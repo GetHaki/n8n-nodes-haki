@@ -44,25 +44,33 @@ function mockExecuteFunctions(params, credentials) {
 		}),
 		continueOnFail: () => false,
 		helpers: {
-			httpRequest: async ({ method, url, headers = {}, body }) => {
-				const response = await fetch(url, {
-					method,
-					headers: { 'content-type': 'application/json', ...headers },
-					body: body === undefined ? undefined : JSON.stringify(body),
-				});
-				if (!response.ok) {
-					const error = new Error(`HTTP ${response.status}`);
-					error.status = response.status;
-					error.body = await response.text();
-					throw error;
-				}
-				return response.json();
+			// Mirrors what n8n's real implementation does: apply the credential's
+			// own `authenticate` config (see credentials/HakiApi.credentials.ts)
+			// before making the request. Outside n8n there's no credential
+			// engine to do this for us, so the mock does it by hand.
+			httpRequestWithAuthentication: {
+				call: async (_ctx, _credentialType, { method, url, headers = {}, body }) => {
+					const apiKey = (credentials.apiKey ?? '').trim();
+					const authHeaders = apiKey ? { Authorization: `Bearer ${apiKey}` } : {};
+					const response = await fetch(url, {
+						method,
+						headers: { 'content-type': 'application/json', ...authHeaders, ...headers },
+						body: body === undefined ? undefined : JSON.stringify(body),
+					});
+					if (!response.ok) {
+						const error = new Error(`HTTP ${response.status}`);
+						error.status = response.status;
+						error.body = await response.text();
+						throw error;
+					}
+					return response.json();
+				},
 			},
 		},
 	};
 }
 
-const CREDENTIALS = { base_url: BASE_URL, api_key: '' };
+const CREDENTIALS = { base_url: BASE_URL, apiKey: '' };
 
 // -- Haki Context -------------------------------------------------------------
 
