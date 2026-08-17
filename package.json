@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-haki",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Community n8n nodes for Haki: Haki Context (before the agent) and Haki Capture (after the agent)",
   "license": "MIT",
   "author": {
@@ -23,7 +23,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && node -e \"require('fs').cpSync('icons','dist/icons',{recursive:true})\"",
     "clean": "rimraf dist 2>/dev/null || rm -rf dist",
     "test": "npm run build && node --test test/run-tests.mjs"
   },

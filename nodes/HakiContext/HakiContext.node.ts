@@ -1,4 +1,5 @@
 import type {
+	Icon,
 	IExecuteFunctions,
 	INodeExecutionData,
 	INodeType,
@@ -18,6 +19,7 @@ export class HakiContext implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Haki Context',
 		name: 'hakiContext',
+		icon: 'file:../../icons/haki.svg' as Icon,
 		group: ['transform'],
 		version: 1,
 		description:

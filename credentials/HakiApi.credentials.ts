@@ -1,4 +1,5 @@
 import type {
+	Icon,
 	IAuthenticateGeneric,
 	ICredentialTestRequest,
 	ICredentialType,
@@ -9,6 +10,8 @@ export class HakiApi implements ICredentialType {
 	name = 'hakiApi';
 
 	displayName = 'Haki API';
+
+	icon: Icon = 'file:../icons/haki.svg' as Icon;
 
 	documentationUrl = 'https://github.com/GetHaki/Haki';
 

@@ -1,5 +1,6 @@
 import { createHash, randomUUID } from 'crypto';
 import type {
+	Icon,
 	IExecuteFunctions,
 	INodeExecutionData,
 	INodeType,
@@ -40,6 +41,7 @@ export class HakiCapture implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Haki Capture',
 		name: 'hakiCapture',
+		icon: 'file:../../icons/haki.svg' as Icon,
 		group: ['transform'],
 		version: 1,
 		description:
