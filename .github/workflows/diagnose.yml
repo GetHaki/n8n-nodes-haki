@@ -1,0 +1,11 @@
+name: Diagnose scan (temporary)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run official scanner with full output
+        run: npx -y @n8n/scan-community-package@beta n8n-nodes-haki
