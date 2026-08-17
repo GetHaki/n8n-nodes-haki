@@ -37,10 +37,10 @@ From this repository's source:
 
 ```bash
 npm install && npm run build && npm pack
-cd ~/.n8n/nodes && npm install <path>/n8n-nodes-haki-0.1.3.tgz
+cd ~/.n8n/nodes && npm install <path>/n8n-nodes-haki-0.1.6.tgz
 ```
 
-> **n8n Cloud**: community nodes require a **verified** node there. Verification goes through the n8n Creator Portal (with GitHub Actions provenance) — submitted, not yet approved. Until then, on n8n Cloud: use the [native HTTP Request template](https://github.com/GetHaki/Haki/blob/main/integrations/n8n/haki-persistent-support-agent.json) instead.
+> **n8n Cloud**: community nodes require a **verified** node there. Verification goes through the n8n Creator Portal (with GitHub Actions provenance) — automated review passed, pending manual review. Until then, on n8n Cloud: use the [native HTTP Request template](https://github.com/GetHaki/Haki/blob/main/integrations/n8n/haki-persistent-support-agent.json) instead.
 
 ## Configuration
 
